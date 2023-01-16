@@ -1,5 +1,5 @@
 # HOW TO RUN BACKEND
-npm i express mysql12 body-parser express-validator bcrypt jsonwebtoken
+npm i express mysql2 body-parser express-validator bcrypt jsonwebtoken
 
 
 SI NO FUNCIONA: 
