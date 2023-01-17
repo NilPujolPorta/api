@@ -1,9 +1,9 @@
-FROM node:latest as node 
-WORKDIR /app
-COPY . .
-RUN npm install
-RUN npm run build --prod
+FROM node:latest as node
 
-#DESPRES
-FROM nginx:alpine
-COPY --from=node /app/dist/borsa-treball /usr/share/nginx/html
+WORKDIR /api
+COPY package.json .
+RUN npm install
+COPY . .
+CMD npm start
+
+
