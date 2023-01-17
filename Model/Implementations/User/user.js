@@ -2,14 +2,18 @@ const bcrypt = require('bcrypt');
 const db = require('../../../Utils/database');
 
 module.exports = class User {
-    name;
     email;
     password;
+    name;
+    surname;
+    category;
 
-    constructor(name,email, password){
+    constructor(email, password, name, surname, category){
         this.name = name;
         this.email = email;
         this.password = password;
+        this.surname = surname;
+        this.category = category;
     }
 
     static async encrypt(password) {
@@ -27,8 +31,8 @@ module.exports = class User {
 
     static save(user) {
         return db.execute(
-            'INSERT INTO Treballador (nom, usuari, contrasenya, cognoms, categoria) VALUES(?, ?, ?, ?, ?)',
-            [user.name, user.email, user.password, "test" ,"catTest"]
+            'INSERT INTO Treballador (usuari, contrasenya, nom, cognoms, categoria) VALUES(?, ?, ?, ?, ?)',
+            [user.email, user.password, user.name, user.surname , user.category]
         );
     }
 }

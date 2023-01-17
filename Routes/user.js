@@ -9,7 +9,6 @@ router.get('/', userController.getUsers)
 
 router.post('/createUser',
 [
-    body('name').trim().not().isEmpty(),
     body('email')
       .isEmail()
       .withMessage('Please enter a valid email.')
@@ -21,6 +20,10 @@ router.post('/createUser',
       })
       .normalizeEmail(),
     body('password').trim().isLength({ min: 7 }),
+    body('name').trim().not().isEmpty(),
+    body('surname').trim().not().isEmpty(),
+    body('category').trim().not().isEmpty(),
+
   ],
 userController.createUser
 ); 
