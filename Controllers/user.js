@@ -3,7 +3,6 @@ const User = require("../Model/Implementations/User/user.js");
 const Token = require('../Model/Implementations/Token/token.js')
 const jwt = require("jsonwebtoken")
 
-const users = new Array();
 const token = new Token();
 
 
@@ -24,11 +23,11 @@ const createUser = (async (req,res) => {
 
 const login = (async (req,res) => {
     let user;
-    await User.login(req.body.email).then(result => user = result[0]);
+    await User.login(req.body.email).then(result => user = result[0][0]);
     
     if (user==null || user==undefined) res.status(404).send("Usuari o contrasenya no vàlids");
     else {
-        /*if (await bcrypt.compare(req.body.password,user.password)) {
+        if (await bcrypt.compare(req.body.password, user.contrasenya)) {
             token.generateAccessToken(({user: req.body.email}))
             token.generateRefreshToken({user: req.body.email})
             console.log(token);
@@ -36,12 +35,8 @@ const login = (async (req,res) => {
         }
         else {
             res.status(401).send("Password incorrect!");
-        }*/
-        res.status(401).send(user);
-    }
-    
-    console.log(user);
-    
+        }
+    }    
 })
 
 const refreshToken = (async (req,res) => {
