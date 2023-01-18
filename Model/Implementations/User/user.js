@@ -22,9 +22,9 @@ module.exports = class User {
         return hashedPassword;
     }
 
-    static find(email) {
+    static login(email) {
         return db.execute(
-            'SELECT * FROM Users WHERE email = ?',
+            'SELECT * FROM Treballador WHERE usuari = ?',
             [email]
         );
     }

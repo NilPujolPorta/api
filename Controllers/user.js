@@ -23,11 +23,12 @@ const createUser = (async (req,res) => {
 })
 
 const login = (async (req,res) => {
-    const user = users.find(req.body.email );
+    let user;
+    await User.login(req.body.email).then(result => user = result[0]);
     
     if (user==null || user==undefined) res.status(404).send("Usuari o contrasenya no vàlids");
     else {
-        if (await bcrypt.compare(req.body.password,user.password)) {
+        /*if (await bcrypt.compare(req.body.password,user.password)) {
             token.generateAccessToken(({user: req.body.email}))
             token.generateRefreshToken({user: req.body.email})
             console.log(token);
@@ -35,7 +36,8 @@ const login = (async (req,res) => {
         }
         else {
             res.status(401).send("Password incorrect!");
-        }
+        }*/
+        res.status(401).send(user);
     }
     
     console.log(user);
