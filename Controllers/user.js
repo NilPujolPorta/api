@@ -3,17 +3,18 @@ const User = require("../Model/Implementations/User/user.js");
 const Token = require('../Model/Implementations/Token/token.js')
 const jwt = require("jsonwebtoken")
 
-const users = new Array();
 const token = new Token();
 
 
 
 const createUser = (async (req,res) => {
-    const userName = req.body.name
-    const userEmail = req.body.email
-    
+    const userEmail = req.body.email;
     const hashedPassword = await User.encrypt(req.body.password);
-    const userDetails = new User(userName,userEmail,hashedPassword);
+    const userName = req.body.name;
+    const userSurname = req.body.surname;
+    const userCategory = req.body.category;
+
+    const userDetails = new User(userEmail,hashedPassword, userName, userSurname, userCategory);
 
     const result = await User.save(userDetails);
 
@@ -21,23 +22,21 @@ const createUser = (async (req,res) => {
 })
 
 const login = (async (req,res) => {
-    const user = users.find( u => u.name == req.body.name );
+    let user;
+    await User.login(req.body.email).then(result => user = result[0][0]);
     
     if (user==null || user==undefined) res.status(404).send("Usuari o contrasenya no vàlids");
     else {
-        if (await bcrypt.compare(req.body.password,user.password)) {
-            token.generateAccessToken(({user: req.body.name}))
-            token.generateRefreshToken({user: req.body.name})
+        if (await bcrypt.compare(req.body.password, user.contrasenya)) {
+            token.generateAccessToken(({user: req.body.email}))
+            token.generateRefreshToken({user: req.body.email})
             console.log(token);
             res.json({accessToken: token.accessToken, refreshToken: token.refreshToken})
         }
         else {
-            res.status(401).send("Password incorrect!");
+            res.status(401).send("Usuari o contrasenya no vàlids");
         }
-    }
-    
-    console.log(user);
-    
+    }    
 })
 
 const refreshToken = (async (req,res) => {

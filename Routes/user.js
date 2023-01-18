@@ -8,8 +8,7 @@ const userController = require('../Controllers/user.js')
 router.get('/', userController.getUsers)
 
 router.post('/createUser',
-[
-    body('name').trim().not().isEmpty(),
+  [
     body('email')
       .isEmail()
       .withMessage('Please enter a valid email.')
@@ -21,14 +20,18 @@ router.post('/createUser',
       })
       .normalizeEmail(),
     body('password').trim().isLength({ min: 7 }),
-  ],
-userController.createUser
-); 
-router.post('/login', userController.login) 
-router.post('/refreshToken', userController.refreshToken)
-router.delete('/logout',userController.logout)
+    body('name').trim().not().isEmpty(),
+    body('surname').trim().not().isEmpty(),
+    body('category').trim().not().isEmpty(),
 
-router.get('/auth',userController.validateToken,userController.authenticated)
+  ],
+  userController.createUser
+);
+router.post('/login', userController.login)
+router.post('/refreshToken', userController.refreshToken)
+router.delete('/logout', userController.logout)
+
+router.get('/auth', userController.validateToken, userController.authenticated)
 
 
 
