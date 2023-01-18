@@ -27,12 +27,7 @@ router.post('/createUser',
   ],
   userController.createUser
 );
-router.post('/login', 
-[
-  body('email').trim().not().isEmpty(),
-  body('password').trim().not().isEmpty()
-], 
-userController.login)
+router.post('/login', userController.login)
 router.post('/refreshToken', userController.refreshToken)
 router.delete('/logout', userController.logout)
 

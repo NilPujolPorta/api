@@ -34,7 +34,7 @@ const login = (async (req,res) => {
             res.json({accessToken: token.accessToken, refreshToken: token.refreshToken})
         }
         else {
-            res.status(401).send("Password incorrect!");
+            res.status(401).send("Usuari o contrasenya no vàlids");
         }
     }    
 })
