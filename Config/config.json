@@ -3,5 +3,5 @@
     "user":"root",
     "database":"hospital",
     "password":"root",
-    "timezone": "01:00"
+    "timezone": "UTC+1"
 }
