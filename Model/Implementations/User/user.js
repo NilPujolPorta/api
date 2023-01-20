@@ -35,4 +35,21 @@ module.exports = class User {
             [user.email, user.password, user.name, user.surname , user.category]
         );
     }
+
+    static getPlantilles() {
+        return db.execute(
+            'SELECT * FROM Plantilles'
+        );
+    }
+
+    /*static createGuardies(plantilla) {
+        let festius_fixes = this.getFestiusFixes();
+        console.log(festius_fixes);
+    }*/
+    
+    static getFestiusFixes() {
+        return db.execute(
+            'SELECT * FROM FestiusFixes'
+        );
+    }
 }
