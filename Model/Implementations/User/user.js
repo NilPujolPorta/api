@@ -42,10 +42,12 @@ module.exports = class User {
         );
     }
 
-    /*static createGuardies(plantilla) {
-        let festius_fixes = this.getFestiusFixes();
-        console.log(festius_fixes);
-    }*/
+    static async createGuardies(plantilla) {
+        let festius_fixes = Array();
+        festius_fixes = await this.getFestiusFixes();
+        console.log("Festius");
+        console.log(festius_fixes[0])
+    }
     
     static getFestiusFixes() {
         return db.execute(

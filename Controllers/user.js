@@ -87,13 +87,14 @@ const createGuardies = (async (req, res) => {
     let plantilles = Array();
     await User.getPlantilles(req.body.email).then(result => plantilles = result[0]);
     try {
-        plantilles.forEach(plantilla => {
-            User.createGuardies(plantilla);
-        })
+        //plantilles.forEach(plantilla => {
+        User.createGuardies(plantilles);
+        //})
     } catch (error) {
         res.status(400).send("Error en la creació de guàrdies: " + error);
     }
-    res.send(201).json({ message: "Guàrdies creades correctament" });
+    res.status(201).json({ message: "Guàrdies creades correctament" });
+
 })
 
 
