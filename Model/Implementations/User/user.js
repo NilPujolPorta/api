@@ -41,22 +41,4 @@ module.exports = class User {
             'SELECT * FROM Plantilles'
         );
     }
-
-    static async createGuardies(plantilla) {
-        let festius_fixes = Array();
-        festius_fixes = await this.getFestiusFixes();
-        festius_fixes = festius_fixes[0];
-        festius_fixes.forEach(festiu => {
-            db.execute(
-                "INSERT INTO Guardia (places, torn, zona, categoria, data, usuariMOD) VALUES (?, ?, ?, ?, ?, ?)",
-                [plantilla["places"], plantilla["torn"], plantilla["zona"], plantilla["categoria"], festiu["data"], "admin"]
-            )
-        });
-    }
-    
-    static getFestiusFixes() {
-        return db.execute(
-            'SELECT * FROM FestiusFixes'
-        );
-    }
 }

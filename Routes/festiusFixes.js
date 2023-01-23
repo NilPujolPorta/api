@@ -3,5 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const festiusFixesController = require('../Controllers/festiusFixes.js');
 
-router.get('/getFestiusFixes', festiusFixesController.getFestiusFixes);
-router.get('/createFestiuFixe', festiusFixesController.createFestiuFixe);
+router.get('/', festiusFixesController.getFestiusFixes);
+router.post('/createFestiuFixe', festiusFixesController.createFestiuFixe);
+
+module.exports = router
