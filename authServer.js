@@ -12,6 +12,7 @@ const guardiaRoutes = require('./Routes/guardia.js');
 const plantillesRoutes = require('./Routes/plantilles.js');
 const userArticles = require('./Routes/article.js')
 const zonaRoutes = require('./Routes/zona.js')
+const tornRoutes = require('./Routes/torn.js')
 
 app.use(express.json());
 app.use('/api/user', userRoutes);
@@ -22,6 +23,7 @@ app.use('/api/guardia', guardiaRoutes);
 app.use('/api/plantilles', plantillesRoutes);
 app.use('/api/article', userArticles);
 app.use('/api/zona', zonaRoutes);
+app.use('/api/torn', tornRoutes);
 
 
 const port = process.env.TOKEN_SERVER_PORT;
