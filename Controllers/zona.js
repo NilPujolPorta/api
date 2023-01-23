@@ -2,11 +2,10 @@ const db = require('../Utils/database');
 
 const createZona = (async (req, res) => {
     const nom = req.body.nom;
-    const actiu = req.body.actiu;
     const usuariMOD = req.body.usuariMOD;
     db.execute(
-        "INSERT INTO Zona (nom, actiu, usuariMOD) VALUES (?, ?, ?)",
-        [nom, actiu, usuariMOD]
+        "INSERT INTO Zona (nom, usuariMOD) VALUES (?, ?)",
+        [nom, usuariMOD]
     )
 
     res.status(201).json({ message: 'Zona registrada correctament' });

@@ -6,12 +6,5 @@ const zonaController = require('../Controllers/zona.js')
 
 router.get('/', zonaController.getZones);
 
-router.post('/createZona',
-    [
-        body('nom').not().isEmpty(),
-        body('actiu').not().isEmpty(),
-        body('usuariMOD').not().isEmpty()
-    ],
-    zonaController.createZona
-);
+router.post('/createZona', zonaController.createZona);
 module.exports = router
