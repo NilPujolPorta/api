@@ -3,5 +3,7 @@ const router = express.Router();
 const { body } = require('express-validator');
 const categoriaController = require('../Controllers/categoria.js');
 
-router.get('/getCategories', categoriaController.getCategories);
-//router.get('/createCategoria', categoriaController.createCategoria);
+router.get('/', categoriaController.getCategories);
+router.post('/createCategoria', categoriaController.createCategoria);
+
+module.exports = router
