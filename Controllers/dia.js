@@ -1,24 +1,32 @@
 const db = require('../Utils/database');
 
 const getDies = (async (req, res) => {
-    let categories = [];
+    let dies = [];
+    dies = await returnDies()
+
+    res.json(dies);
+})
+
+async function returnDies() {
+    let dies = [];
     await db.execute(
         'SELECT * FROM Dia'
-    ).then(result => categories = result[0]);
+    ).then(result => dies = result[0]);
 
-    res.json(categories);
-})
+    return dies;
+}
 
 const createDia = (async (req, res) => {
     await db.execute(
         'INSERT INTO Dia (data, usuariMOD) VALUES(?, ?)',
         [req.body.data, req.body.usuariMOD]
     )
-    res.status(201).json({missatge: "Dia afegit"})
+    res.status(201).json({ missatge: "Dia afegit" })
 })
 
 
 module.exports = {
     getDies,
-    createDia
+    createDia,
+    returnDies
 }
