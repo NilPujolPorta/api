@@ -32,7 +32,6 @@ router.post('/refreshToken', userController.refreshToken)
 router.delete('/logout', userController.logout)
 
 router.get('/auth', userController.validateToken, userController.authenticated)
-router.get('/createGuardies', userController.createGuardies)
 
 
 
