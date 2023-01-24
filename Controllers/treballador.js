@@ -1,12 +1,16 @@
 const db = require('../Utils/database');
 
 const createTreballador = (async (req, res) => {
-    const nom = req.body.nom;
+    const usuari = req.body.nom;
+    const contrasenya = req.body.contasenya;
     const usuariMOD = req.body.usuariMOD;
+    const nom = req.body.nom;
+    const cognoms = req.body.cognoms;
+    const categoria = req.body.categoria;
     try {
         db.execute(
-            "INSERT INTO Zona (nom, usuariMOD) VALUES (?, ?)",
-            [nom, usuariMOD]
+            "INSERT INTO Zona (usuari, contasenya, usuariMOD, nom, conoms, categoria) VALUES (?, ?)",
+            [usuari, contrasenya, usuariMOD, nom, cognoms, categoria]
         )
         res.status(201).json({ message: 'Zona registrada correctament' });
     } catch (error) {
