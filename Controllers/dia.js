@@ -2,8 +2,7 @@ const db = require('../Utils/database');
 const date = require("date-and-time");
 
 const getDies = (async (req, res) => {
-    let dies = [];
-    dies = await returnDies()
+    let dies = await returnDies()
 
     res.json(dies);
 })
@@ -11,7 +10,7 @@ const getDies = (async (req, res) => {
 async function returnDies() {
     let dies = [];
     await db.execute(
-        'SELECT * FROM Dia'
+        'SELECT * FROM Dia WHERE actiu = true'
     ).then(result => dies = result[0]);
 
     return dies;

@@ -1,13 +1,19 @@
 const db = require('../Utils/database');
 
 const getFestiusFixes = (async (req, res) => {
-    let festius_fixes = [];
-    await db.execute(
-        'SELECT * FROM FestiusFixes'
-    ).then(result => festius_fixes = result[0]);
+    let festius_fixes = await returnFestiusFixes();
 
     res.json(festius_fixes);
 })
+
+async function returnFestiusFixes(){
+    let festiu = [];
+    await db.execute(
+        'SELECT * FROM FestiusFixes'
+    ).then(result => festiu = result[0]);
+
+    return festiu;
+}
 
 async function returnFestiuFixe(data) {
     let festiu = [];

@@ -1,7 +1,7 @@
 const db = require('../Utils/database');
 
 const getCategories = (async (req, res) => {
-    let categories = returnCategories();
+    let categories = await returnCategories();
 
     res.json(categories);
 })
@@ -9,8 +9,10 @@ const getCategories = (async (req, res) => {
 async function returnCategories() {
     let categories = [];
     await db.execute(
-        'SELECT * FROM Categoria'
+        'SELECT * FROM Categoria WHERE actiu = true'
     ).then(result => categories = result[0]);
+
+    return categories;
 }
 
 const getCategoria = (async (req, res) => {
@@ -21,7 +23,7 @@ const getCategoria = (async (req, res) => {
 async function returnCategoria(nom_categoria) {
     let categoria = [];
     await db.execute(
-        'SELECT * FROM Categoria WHERE nom = ?',
+        'SELECT * FROM Categoria WHERE nom = ? ',
         [nom_categoria]
     ).then(result => categoria = result[0]);
 
@@ -46,9 +48,22 @@ const createCategoria = (async (req, res) => {
     }
 })
 
+const deactivateCategoria = (async (req, res) => {
+    try {
+        await db.execute(
+            'UPDATE Categoria SET actiu = false AND usuariMOD = ? WHERE nom = ?',
+            [req.body.usuariMOD, req.body.nom]
+        )
+        res.status(201).json({ missatge: "Categoria desactivada" })
+    } catch (error) {
+        res.status(400).json({missatge: error})
+    }
+})
+
 
 module.exports = {
     getCategories,
     createCategoria,
-    getCategoria
+    getCategoria,
+    deactivateCategoria
 }

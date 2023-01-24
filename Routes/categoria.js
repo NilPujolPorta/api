@@ -5,5 +5,6 @@ const categoriaController = require('../Controllers/categoria.js');
 
 router.get('/', categoriaController.getCategories);
 router.post('/createCategoria', categoriaController.createCategoria);
+router.post('/deactivateCategoria', categoriaController.deactivateCategoria);
 
 module.exports = router
