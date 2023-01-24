@@ -65,8 +65,21 @@ async function crearGuardiesPerDia(dia) {
     });
 }
 
+const deactivateGuardia = (async (req, res) => {
+    try {
+        await db.execute(
+            'UPDATE Guardia SET actiu = false AND usuariMOD = ? WHERE idGuardia = ?',
+            [req.body.usuariMOD, req.body.data]
+        )
+        res.status(201).json({ missatge: "Festiu desactivat" })
+    } catch (error) {
+        res.status(400).json({missatge: error})
+    }
+})
+
 module.exports = {
     getGuardies,
     createGuardia,
-    createGuardies
+    createGuardies,
+    deactivateGuardia
 }

@@ -44,8 +44,21 @@ const createFestiuFixe = (async (req, res) => {
     }
 })
 
+const deactivateFestiuFixe = (async (req, res) => {
+    try {
+        await db.execute(
+            'UPDATE FestiusFixes SET actiu = false AND usuariMOD = ? WHERE data = ?',
+            [req.body.usuariMOD, req.body.data]
+        )
+        res.status(201).json({ missatge: "Festiu desactivat" })
+    } catch (error) {
+        res.status(400).json({missatge: error})
+    }
+})
+
 
 module.exports = {
     getFestiusFixes,
-    createFestiuFixe
+    createFestiuFixe,
+    deactivateFestiuFixe
 }

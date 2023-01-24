@@ -5,5 +5,6 @@ const festiusFixesController = require('../Controllers/festiusFixes.js');
 
 router.get('/', festiusFixesController.getFestiusFixes);
 router.post('/createFestiuFixe', festiusFixesController.createFestiuFixe);
+router.post('/deactivateFestiuFixe', festiusFixesController.deactivateFestiuFixe);
 
 module.exports = router
