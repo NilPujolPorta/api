@@ -43,9 +43,22 @@ const createDia = (async (req, res) => {
     }
 })
 
+const deactivateDia = (async (req, res) => {
+    try {
+        await db.execute(
+            'UPDATE Dia SET actiu = false AND usuariMOD = ? WHERE data = ?',
+            [req.body.usuariMOD, req.body.data]
+        )
+        res.status(201).json({ missatge: "Dia desactivat" })
+    } catch (error) {
+        res.status(400).json({missatge: error})
+    }
+})
+
 
 module.exports = {
     getDies,
     createDia,
-    returnDies
+    returnDies,
+    deactivateDia
 }
