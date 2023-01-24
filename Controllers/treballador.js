@@ -7,10 +7,11 @@ const createTreballador = (async (req, res) => {
     const nom = req.body.nom;
     const cognoms = req.body.cognoms;
     const categoria = req.body.categoria;
+    const rol = req.body.rol;
     try {
         db.execute(
-            "INSERT INTO Zona (usuari, contasenya, usuariMOD, nom, conoms, categoria) VALUES (?, ?)",
-            [usuari, contrasenya, usuariMOD, nom, cognoms, categoria]
+            "INSERT INTO Zona (usuari, contasenya, usuariMOD, nom, conoms, categoria, rol) VALUES (?, ?)",
+            [usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol]
         )
         res.status(201).json({ message: 'Zona registrada correctament' });
     } catch (error) {

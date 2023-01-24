@@ -16,7 +16,7 @@ const getZones = (async (req, res) => {
     await db.execute(
         'SELECT * FROM Zona'
     ).then(result => resposta = result[0]);
-    res.json(resposta);
+    res.status(200).json(resposta);
 })
 
 

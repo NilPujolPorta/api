@@ -14,6 +14,7 @@ const userArticles = require('./Routes/article.js')
 const zonaRoutes = require('./Routes/zona.js')
 const tornRoutes = require('./Routes/torn.js')
 const treballadorsApuntatsRoutes = require('./Routes/treballadorsApuntats.js')
+const treballadorRoutes = require('./Routes/treballador.js')
 
 app.use(express.json());
 app.use('/api/user', userRoutes);
@@ -26,6 +27,7 @@ app.use('/api/article', userArticles);
 app.use('/api/zona', zonaRoutes);
 app.use('/api/torn', tornRoutes);
 app.use('/api/treballadorsApuntats', treballadorsApuntatsRoutes);
+app.use('/api/treballadors', treballadorRoutes);
 
 
 const port = process.env.TOKEN_SERVER_PORT;
