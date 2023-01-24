@@ -29,18 +29,21 @@ async function returnCategoria(nom_categoria) {
 }
 
 const createCategoria = (async (req, res) => {
-    let categoria = await returnCategoria(req.body.nom);
-    if (categoria[0] == undefined) {
-        await db.execute(
-            'INSERT INTO Categoria (nom, usuariMOD) VALUES(?, ?)',
-            [req.body.nom, req.body.usuariMOD]
-        )
-        res.status(201).json({ missatge: "Categoria afegida" })
+    try {
+        let categoria = await returnCategoria(req.body.nom);
+        if (categoria[0] == undefined) {
+            await db.execute(
+                'INSERT INTO Categoria (nom, usuariMOD) VALUES(?, ?)',
+                [req.body.nom, req.body.usuariMOD]
+            )
+            res.status(201).json({ missatge: "Categoria afegida" })
 
-    } else {
-        res.status(403).json({ missatge: "Aquesta categoria ja existeix" })
+        } else {
+            res.status(400).json({ missatge: "Aquesta categoria ja existeix" })
+        }
+    } catch (error) {
+        res.status(400).json({ missatge: error })
     }
-
 })
 
 

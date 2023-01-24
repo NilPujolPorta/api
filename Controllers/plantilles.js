@@ -6,7 +6,7 @@ const getPlantilles = (async (req, res) => {
     res.json(plantilles);
 })
 
-async function returnPlantilles(){
+async function returnPlantilles() {
     let plantilles = [];
     await db.execute(
         'SELECT * FROM Plantilles'
@@ -15,12 +15,31 @@ async function returnPlantilles(){
     return plantilles
 }
 
-const createPlantilla = (async (req, res) => {
+async function returnPlantilla(places, torn, zona, categoria) {
+    let plantilla = [];
     await db.execute(
-        'INSERT INTO Plantilles (places, torn, zona, categoria, usuariMOD) VALUES(?, ?, ?, ?, ?)',
-        [req.body.places, req.body.torn, req.body.zona, req.body.categoria, req.body.usuariMOD]
-    )
-    res.status(201).json({missatge: "Plantilla afegida"})
+        'SELECT * FROM Plantilles WHERE places = ? AND torn = ? AND zona = ? AND categoria = ?',
+        [places, torn, zona, categoria]
+    ).then(result => plantilla = result[0]);
+
+    return plantilla;
+}
+
+const createPlantilla = (async (req, res) => {
+    try {
+        let plantilla = await returnPlantilla(req.body.places, req.body.torn, req.body.zona, req.body.categoria);
+        if (plantilla[0] == undefined) {
+            await db.execute(
+                'INSERT INTO Plantilles (places, torn, zona, categoria, usuariMOD) VALUES(?, ?, ?, ?, ?)',
+                [req.body.places, req.body.torn, req.body.zona, req.body.categoria, req.body.usuariMOD]
+            )
+            res.status(201).json({ missatge: "Plantilla afegida" })
+        } else {
+            res.status(400).json({ missatge: "Aquesta plantilla ja existeix" })
+        }
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 

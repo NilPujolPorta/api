@@ -9,12 +9,33 @@ const getFestiusFixes = (async (req, res) => {
     res.json(festius_fixes);
 })
 
-const createFestiuFixe = (async (req, res) => {
+async function returnFestiuFixe(data) {
+    let festiu = [];
     await db.execute(
-        'INSERT INTO FestiusFixes (data, usuariMOD) VALUES(?, ?)',
-        [req.body.data, req.body.usuariMOD]
-    )
-    res.status(201).json({missatge: "Festiu fixe afegit"})
+        'SELECT * FROM FestiusFixes WHERE data = ?',
+        [data]
+    ).then(result => festiu = result[0]);
+
+    return festiu;
+}
+
+const createFestiuFixe = (async (req, res) => {
+    try {
+        let festiu = await returnFestiuFixe(req.body.data);
+        if (festiu[0] == undefined) {
+
+            await db.execute(
+                'INSERT INTO FestiusFixes (data, usuariMOD) VALUES(?, ?)',
+                [req.body.data, req.body.usuariMOD]
+            )
+            res.status(201).json({ missatge: "Festiu afegit" })
+
+        } else {
+            res.status(400).json({ missatge: "Aquest festiu ja existeix" })
+        }
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 
