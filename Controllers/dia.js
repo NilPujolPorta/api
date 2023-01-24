@@ -1,4 +1,5 @@
 const db = require('../Utils/database');
+const date = require("date-and-time");
 
 const getDies = (async (req, res) => {
     let dies = [];
@@ -16,12 +17,27 @@ async function returnDies() {
     return dies;
 }
 
-const createDia = (async (req, res) => {
+async function returnDia(data) {
+    let dia = [];
     await db.execute(
-        'INSERT INTO Dia (data, usuariMOD) VALUES(?, ?)',
-        [req.body.data, req.body.usuariMOD]
-    )
-    res.status(201).json({ missatge: "Dia afegit" })
+        'SELECT * FROM Dia WHERE data = ?',
+        [data]
+    ).then(result => dia = result[0]);
+
+    return dia;
+}
+
+const createDia = (async (req, res) => {
+    let dia = await returnDia(req.body.data);
+    if (dia[0] == undefined) {
+        await db.execute(
+            'INSERT INTO Dia (data, usuariMOD) VALUES(?, ?)',
+            [req.body.data, req.body.usuariMOD]
+        )
+        res.status(201).json({ missatge: "Dia afegit" })
+    } else {
+        res.status(403).json({ missatge: "Aquest dia ja existeix" })
+    }
 })
 
 

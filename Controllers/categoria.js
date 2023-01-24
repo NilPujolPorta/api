@@ -29,8 +29,8 @@ async function returnCategoria(nom_categoria) {
 }
 
 const createCategoria = (async (req, res) => {
-    let cat = await returnCategoria(req.body.nom);
-    if (cat[0] == undefined) {
+    let categoria = await returnCategoria(req.body.nom);
+    if (categoria[0] == undefined) {
         await db.execute(
             'INSERT INTO Categoria (nom, usuariMOD) VALUES(?, ?)',
             [req.body.nom, req.body.usuariMOD]
