@@ -1,7 +1,7 @@
 {
-    "host":"localhost",
-    "user":"root",
-    "database":"hospital",
-    "password":"root",
-    "timezone": "UTC+1"
+    "host": "localhost",
+    "user": "root",
+    "database": "hospital",
+    "password": "root",
+    "timezone": "+01:00"
 }
