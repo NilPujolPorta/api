@@ -61,14 +61,18 @@ const createGuardies = (async (req, res) => {
 })
 
 async function crearGuardiesPerDia(dia) {
-    let plantilles = await plantillaController.returnDies();
-    plantilles = plantilles[0];
-    plantilles.forEach(plantilla => {
-        db.execute(
-            "INSERT INTO Guardia (places, torn, zona, categoria, data, usuariMOD) VALUES (?, ?, ?, ?, ?, ?)",
-            [plantilla["places"], plantilla["torn"], plantilla["zona"], plantilla["categoria"], date.format(dia["data"], "YYYY-MM-DD"), "admin"]
-        )
-    });
+    let plantilles = await plantillaController.returnPlantilles();
+    try {
+        plantilles.forEach(plantilla => {
+            db.execute(
+                "INSERT INTO Guardia (places, torn, zona, categoria, data, usuariMOD) VALUES (?, ?, ?, ?, ?, ?)",
+                [plantilla["places"], plantilla["torn"], plantilla["zona"], plantilla["categoria"], date.format(dia["data"], "YYYY-MM-DD"), "admin"]
+            )
+        }); 
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
 const deactivateGuardia = (async (req, res) => {

@@ -4,7 +4,7 @@ const apuntarTreballador = (async (req, res) => {
     const nom = req.body.nom;
     const usuariMOD = req.body.usuariMOD;
     db.execute(
-        "INSERT INTO Zona (nom, usuariMOD) VALUES (?, ?)",
+        "INSERT INTO TreballadorsApuntats (nom, usuariMOD) VALUES (?, ?)",
         [nom, usuariMOD]
     )
 

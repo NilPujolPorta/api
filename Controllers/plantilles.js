@@ -12,7 +12,7 @@ async function returnPlantilles() {
         'SELECT * FROM Plantilles WHERE actiu = true'
     ).then(result => plantilles = result[0]);
 
-    return plantilles
+    return plantilles;
 }
 
 async function returnPlantilla(places, torn, zona, categoria) {
