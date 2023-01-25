@@ -1,14 +1,13 @@
 const db = require('../Utils/database');
 
 const apuntarTreballador = (async (req, res) => {
-    const estat = req.body.estat;
     const idGuardia = req.body.idGuardia;
     const usuari = req.body.usuari;
     const usuariMOD = req.body.usuariMOD;
     try {
         db.execute(
-            "INSERT INTO TreballadorsApuntats (estat, idGuardia, usuari, usuariMOD) VALUES (?, ?, ?, ?)",
-            [estat, idGuardia, usuari, usuariMOD]
+            "INSERT INTO TreballadorsApuntats (estat, idGuardia, usuari, usuariMOD) VALUES ('apuntat', ?, ?, ?)",
+            [idGuardia, usuari, usuariMOD]
         )
 
         res.status(201).json({ missatge: "Treballador apuntat correctament" });
@@ -49,8 +48,8 @@ const getIDGuardiesByTreballador = (async (req, res) => {
 const desapuntarTreballador = (async (req, res) => {
     try {
         await db.execute(
-            "UPDATE TreballadorsApuntats SET estat = 'desapuntat' WHERE idGuardia = ? AND usuari = ?",
-             [req.body.idGuardia, req.body.usuari]
+            "UPDATE TreballadorsApuntats SET estat = 'desapuntat' AND usarMOD = ? WHERE idGuardia = ? AND usuari = ?",
+             [req.body.usuariMOD, req.body.idGuardia, req.body.usuari]
         )
         res.status(201).json({ missatge: "Treballador desapuntat" })
     } catch (error) {
@@ -58,11 +57,44 @@ const desapuntarTreballador = (async (req, res) => {
     }
 })
 
+const seleccioTreballadors = (async (req, res) => {
+    try {
+        let usuarisTriats =  req.body.usuarisTriats;
+        let usuarisNoTriats =  req.body.usuarisNoTriats;
+        await ferSeleccio(usuarisTriats, usuarisNoTriats, req.body.idGuardia, req.body.usuariMOD);
+        
+        res.status(201).json({ missatge: "Selecció feta" })
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
+})
+
+async function ferSeleccio(usuarisTriats, usuarisNoTriats, idGuardia, usuariMOD){
+    try {
+        await usuarisTriats.forEach(usuari => {
+            db.execute(
+                "UPDATE TreballadorsApuntats SET estat = 'triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
+                 [usuariMOD, idGuardia, usuari]
+            )
+        });
+    
+        await usuarisNoTriats.forEach(usuari => {
+            db.execute(
+                "UPDATE TreballadorsApuntats SET estat = 'no triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
+                 [usuariMOD, idGuardia, usuari]
+            )
+        });
+    } catch (error) {
+        console.log(error)
+    }
+    
+}
 
 module.exports = {
     apuntarTreballador,
     getTrebelladorsApuntats,
     getIDGuardiesByTreballador,
     getIDTreballadorsByIdGuardia,
-    desapuntarTreballador
+    desapuntarTreballador,
+    seleccioTreballadors
 }
