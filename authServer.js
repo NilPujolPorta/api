@@ -27,7 +27,7 @@ app.use('/api/article', userArticles);
 app.use('/api/zona', zonaRoutes);
 app.use('/api/torn', tornRoutes);
 app.use('/api/treballadorsApuntats', treballadorsApuntatsRoutes);
-app.use('/api/treballadors', treballadorRoutes);
+app.use('/api/treballador', treballadorRoutes);
 
 
 const port = process.env.TOKEN_SERVER_PORT;

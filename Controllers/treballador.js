@@ -1,8 +1,9 @@
 const db = require('../Utils/database');
+const bcrypt = require('bcrypt');
 
 const createTreballador = (async (req, res) => {
-    const usuari = req.body.nom;
-    const contrasenya = req.body.contasenya;
+    const usuari = req.body.usuari;
+    const contrasenya = await encrypt(req.body.contrasenya);
     const usuariMOD = req.body.usuariMOD;
     const nom = req.body.nom;
     const cognoms = req.body.cognoms;
@@ -10,14 +11,20 @@ const createTreballador = (async (req, res) => {
     const rol = req.body.rol;
     try {
         db.execute(
-            "INSERT INTO Treballador (usuari, contasenya, usuariMOD, nom, conoms, categoria, rol) VALUES (?, ?)",
+            "INSERT INTO Treballador (usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol) VALUES (?, ?, ?, ?, ?, ?, ?)",
             [usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol]
         )
-        res.status(201).json({ message: 'Zona registrada correctament' });
+        res.status(201).json({ message: 'Treballador registrat correctament' });
     } catch (error) {
-        res.status(400).json({ message: 'Error en registrar la zona' })
+        res.status(400).json({ message: error})
     }
 })
+
+async function encrypt(password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password,salt);
+    return hashedPassword;
+}
 
 const getTreballadors = (async (req, res) => {
     let resposta = [];
@@ -27,8 +34,13 @@ const getTreballadors = (async (req, res) => {
     res.status(200).json(resposta);
 })
 
+const getGuardiesTreballador = (async (req, res) => {
+
+})
+
 
 module.exports = {
     createTreballador,
-    getTreballadors
+    getTreballadors,
+    getGuardiesTreballador
 }

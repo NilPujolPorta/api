@@ -6,5 +6,6 @@ const treballadorController = require('../Controllers/treballador.js')
 
 router.get('/', treballadorController.getTreballadors);
 
-router.post('/createZona', treballadorController.createTreballador);
+router.post('/createTreballador', treballadorController.createTreballador);
+router.post('/getGuardiesTreballador', treballadorController.getGuardiesTreballador);
 module.exports = router
