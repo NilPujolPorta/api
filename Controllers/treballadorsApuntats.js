@@ -19,7 +19,7 @@ const getTrebelladorsApuntats = (async (req, res) => {
     res.json(resposta);
 })
 
-const getIDGuardiesByTreballador = (async (req, res) => {
+const getIDTreballadorsByIdGuardia = (async (req, res) => {
     let resposta = [];
     const id = req.body.idGuardia;
     await db.execute(
@@ -29,7 +29,7 @@ const getIDGuardiesByTreballador = (async (req, res) => {
     res.json(resposta);
 })
 
-const getIDTreballadorsByIdGuardia = (async (req, res) => {
+const getIDGuardiesByTreballador = (async (req, res) => {
     let resposta = [];
     const id = req.body.usuari;
     await db.execute(
