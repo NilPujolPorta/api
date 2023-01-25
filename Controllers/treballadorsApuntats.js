@@ -1,14 +1,16 @@
 const db = require('../Utils/database');
 
 const apuntarTreballador = (async (req, res) => {
-    const nom = req.body.nom;
+    const estat = req.body.estat;
+    const idGuardia = req.body.idGuardia;
+    const usuari = req.body.usuari;
     const usuariMOD = req.body.usuariMOD;
     db.execute(
-        "INSERT INTO TreballadorsApuntats (nom, usuariMOD) VALUES (?, ?)",
-        [nom, usuariMOD]
+        "INSERT INTO TreballadorsApuntats (estat, idGuardia, usuari, usuariMOD) VALUES (?, ?, ?, ?)",
+        [estat, idGuardia, usuari, usuariMOD]
     )
 
-    res.status(201).json({ message: "Zona registrada correctament" });
+    res.status(201).json({ message: "Treballador apuntat correctament" });
 })
 
 const getTrebelladorsApuntats = (async (req, res) => {
