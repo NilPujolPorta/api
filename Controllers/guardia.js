@@ -87,9 +87,19 @@ const deactivateGuardia = (async (req, res) => {
     }
 })
 
+const getGuardiesTreballador = (async (req, res) => {
+    let guardies = []
+    await db.execute(
+        "SELECT * from Guardia WHERE idGuardia IN (SELECT idGuardia FROM TreballadorsApuntats WHERE usuari = ?)",
+        [req.body.usuari]
+    ).then(result => guardies = result[0])
+    res.status(201).json(guardies)
+})
+
 module.exports = {
     getGuardies,
     createGuardia,
     createGuardies,
-    deactivateGuardia
+    deactivateGuardia,
+    getGuardiesTreballador
 }
