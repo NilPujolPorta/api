@@ -34,13 +34,8 @@ const getTreballadors = (async (req, res) => {
     res.status(200).json(resposta);
 })
 
-const getGuardiesTreballador = (async (req, res) => {
-
-})
-
 
 module.exports = {
     createTreballador,
-    getTreballadors,
-    getGuardiesTreballador
+    getTreballadors
 }
