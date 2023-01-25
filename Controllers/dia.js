@@ -19,7 +19,7 @@ async function returnDies() {
 async function returnDia(data) {
     let dia = [];
     await db.execute(
-        'SELECT * FROM Dia WHERE data = ?',
+        'SELECT * FROM Dia WHERE data = ? AND actiu = true',
         [data]
     ).then(result => dia = result[0]);
 

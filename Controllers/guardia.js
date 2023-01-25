@@ -5,18 +5,24 @@ const plantillaController = require('../Controllers/plantilles.js');
 const date = require("date-and-time");
 
 const getGuardies = (async (req, res) => {
-    let categories = [];
-    await db.execute(
-        'SELECT * FROM Guardia'
-    ).then(result => categories = result[0]);
+    let guardies = await returnGuardies();
 
-    res.json(categories);
+    res.json(guardies);
 })
+
+async function returnGuardies() {
+    let guardies = [];
+    await db.execute(
+        'SELECT * FROM Guardia WHERE actiu = true'
+    ).then(result => guardies = result[0]);
+
+    return guardies;
+}
 
 async function returnGuardia(places, torn, zona, categoria, data) {
     let guardia = [];
     await db.execute(
-        'SELECT * FROM Guardia WHERE places = ? AND torn = ? AND zona = ? AND categoria = ? AND data = ?',
+        'SELECT * FROM Guardia WHERE places = ? AND torn = ? AND zona = ? AND categoria = ? AND data = ? AND actiu = true',
         [places, torn, zona, categoria, data]
     ).then(result => guardia = result[0]);
 
@@ -69,9 +75,9 @@ const deactivateGuardia = (async (req, res) => {
     try {
         await db.execute(
             'UPDATE Guardia SET actiu = false AND usuariMOD = ? WHERE idGuardia = ?',
-            [req.body.usuariMOD, req.body.data]
+            [req.body.usuariMOD, req.body.idGuardia]
         )
-        res.status(201).json({ missatge: "Festiu desactivat" })
+        res.status(201).json({ missatge: "Guardia desactivada" })
     } catch (error) {
         res.status(400).json({missatge: error})
     }

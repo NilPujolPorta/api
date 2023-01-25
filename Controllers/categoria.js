@@ -23,7 +23,7 @@ const getCategoria = (async (req, res) => {
 async function returnCategoria(nom_categoria) {
     let categoria = [];
     await db.execute(
-        'SELECT * FROM Categoria WHERE nom = ? ',
+        'SELECT * FROM Categoria WHERE nom = ? AND actiu = true',
         [nom_categoria]
     ).then(result => categoria = result[0]);
 

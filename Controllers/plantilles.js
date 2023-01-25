@@ -9,7 +9,7 @@ const getPlantilles = (async (req, res) => {
 async function returnPlantilles() {
     let plantilles = [];
     await db.execute(
-        'SELECT * FROM Plantilles'
+        'SELECT * FROM Plantilles WHERE actiu = true'
     ).then(result => plantilles = result[0]);
 
     return plantilles
@@ -18,7 +18,7 @@ async function returnPlantilles() {
 async function returnPlantilla(places, torn, zona, categoria) {
     let plantilla = [];
     await db.execute(
-        'SELECT * FROM Plantilles WHERE places = ? AND torn = ? AND zona = ? AND categoria = ?',
+        'SELECT * FROM Plantilles WHERE places = ? AND torn = ? AND zona = ? AND categoria = ? AND actiu = true',
         [places, torn, zona, categoria]
     ).then(result => plantilla = result[0]);
 
@@ -42,9 +42,22 @@ const createPlantilla = (async (req, res) => {
     }
 })
 
+const deactivatePlantilla = (async (req, res) => {
+    try {
+        await db.execute(
+            'UPDATE Plantilles SET actiu = false AND usuariMOD = ? WHERE idPlantilla = ?',
+            [req.body.usuariMOD, req.body.idPlantilla]
+        )
+        res.status(201).json({ missatge: "Plantilla desactivada" })
+    } catch (error) {
+        res.status(400).json({missatge: error})
+    }
+})
+
 
 module.exports = {
     getPlantilles,
     returnPlantilles,
-    createPlantilla
+    createPlantilla,
+    deactivatePlantilla
 }

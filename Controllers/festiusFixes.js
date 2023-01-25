@@ -9,7 +9,7 @@ const getFestiusFixes = (async (req, res) => {
 async function returnFestiusFixes(){
     let festiu = [];
     await db.execute(
-        'SELECT * FROM FestiusFixes'
+        'SELECT * FROM FestiusFixes WHERE actiu = true'
     ).then(result => festiu = result[0]);
 
     return festiu;
@@ -18,7 +18,7 @@ async function returnFestiusFixes(){
 async function returnFestiuFixe(data) {
     let festiu = [];
     await db.execute(
-        'SELECT * FROM FestiusFixes WHERE data = ?',
+        'SELECT * FROM FestiusFixes WHERE data = ? AND actiu = true',
         [data]
     ).then(result => festiu = result[0]);
 
