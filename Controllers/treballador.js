@@ -10,7 +10,7 @@ const createTreballador = (async (req, res) => {
     const rol = req.body.rol;
     try {
         db.execute(
-            "INSERT INTO Zona (usuari, contasenya, usuariMOD, nom, conoms, categoria, rol) VALUES (?, ?)",
+            "INSERT INTO Treballador (usuari, contasenya, usuariMOD, nom, conoms, categoria, rol) VALUES (?, ?)",
             [usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol]
         )
         res.status(201).json({ message: 'Zona registrada correctament' });
@@ -22,7 +22,7 @@ const createTreballador = (async (req, res) => {
 const getTreballadors = (async (req, res) => {
     let resposta = [];
     await db.execute(
-        'SELECT * FROM Treballador'
+        'SELECT * FROM Treballador WHERE actiu = true'
     ).then(result => resposta = result[0]);
     res.status(200).json(resposta);
 })
