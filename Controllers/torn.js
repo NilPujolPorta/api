@@ -8,7 +8,7 @@ const createTorn = (async (req, res) => {
         [nom, usuariMOD]
     )
 
-    res.status(201).json({ message: 'Torn registrat correctament' });
+    res.status(201).json({ missatge: 'Torn registrat correctament' });
 })
 
 const getTorns = (async (req, res) => {

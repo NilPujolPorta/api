@@ -18,7 +18,7 @@ const createUser = (async (req, res) => {
 
     const result = await User.save(userDetails);
 
-    res.status(201).json({ message: 'Usuari registrat correctament' });
+    res.status(201).json({ missatge: 'Usuari registrat correctament' });
 })
 
 const login = (async (req, res) => {

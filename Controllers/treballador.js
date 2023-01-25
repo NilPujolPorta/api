@@ -14,9 +14,9 @@ const createTreballador = (async (req, res) => {
             "INSERT INTO Treballador (usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol) VALUES (?, ?, ?, ?, ?, ?, ?)",
             [usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol]
         )
-        res.status(201).json({ message: 'Treballador registrat correctament' });
+        res.status(201).json({ missatge: 'Treballador registrat correctament' });
     } catch (error) {
-        res.status(400).json({ message: error})
+        res.status(400).json({ missatge: error})
     }
 })
 

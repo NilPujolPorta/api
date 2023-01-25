@@ -8,7 +8,7 @@ const createZona = (async (req, res) => {
         [nom, usuariMOD]
     )
 
-    res.status(201).json({ message: 'Zona registrada correctament' });
+    res.status(201).json({ missatge: 'Zona registrada correctament' });
 })
 
 const getZones = (async (req, res) => {
