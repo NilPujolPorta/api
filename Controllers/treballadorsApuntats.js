@@ -49,7 +49,7 @@ const desapuntarTreballador = (async (req, res) => {
     try {
         await db.execute(
             "UPDATE TreballadorsApuntats SET estat = 'desapuntat' AND usarMOD = ? WHERE idGuardia = ? AND usuari = ?",
-             [req.body.usuariMOD, req.body.idGuardia, req.body.usuari]
+            [req.body.usuariMOD, req.body.idGuardia, req.body.usuari]
         )
         res.status(201).json({ missatge: "Treballador desapuntat" })
     } catch (error) {
@@ -59,35 +59,71 @@ const desapuntarTreballador = (async (req, res) => {
 
 const seleccioTreballadors = (async (req, res) => {
     try {
-        let usuarisTriats =  req.body.usuarisTriats;
-        let usuarisNoTriats =  req.body.usuarisNoTriats;
+        let usuarisTriats = req.body.usuarisTriats;
+        let usuarisNoTriats = req.body.usuarisNoTriats;
         await ferSeleccio(usuarisTriats, usuarisNoTriats, req.body.idGuardia, req.body.usuariMOD);
-        
+
         res.status(201).json({ missatge: "Selecció feta" })
     } catch (error) {
         res.status(400).json({ missatge: error })
     }
 })
 
-async function ferSeleccio(usuarisTriats, usuarisNoTriats, idGuardia, usuariMOD){
+const triarTreballador = (async (req, res) => {
+    try {
+        escollirTreballador(req.body.usuariMOD, req.body.idGuardia, req.body.usuari)
+        res.status(201).json({ missatge: "Usuari escollit per la guàrdia" })
+    } catch (error) {
+        res.status(400).json({missatge: error})
+    }
+
+})
+
+const noTriarTreballador = (async (req, res) => {
+    try {
+        noEscollirTreballador(req.body.usuariMOD, req.body.idGuardia, req.body.usuari)
+        res.status(201).json({ missatge: "Usuari no escollit per la guàrdia" })
+    } catch (error) {
+        res.status(400).json({missatge: error})
+    }
+})
+
+async function ferSeleccio(usuarisTriats, usuarisNoTriats, idGuardia, usuariMOD) {
     try {
         await usuarisTriats.forEach(usuari => {
-            db.execute(
-                "UPDATE TreballadorsApuntats SET estat = 'triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
-                 [usuariMOD, idGuardia, usuari]
-            )
+            escollirTreballador(usuariMOD, idGuardia, usuari)
         });
-    
+
         await usuarisNoTriats.forEach(usuari => {
-            db.execute(
-                "UPDATE TreballadorsApuntats SET estat = 'no triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
-                 [usuariMOD, idGuardia, usuari]
-            )
+            noEscollirTreballador(usuariMOD, idGuardia, usuari)
         });
     } catch (error) {
-        console.log(error)
+        return error
     }
-    
+
+}
+
+async function escollirTreballador(usuariMOD, idGuardia, usuari) {
+    try {
+        db.execute(
+            "UPDATE TreballadorsApuntats SET estat = 'triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
+            [usuariMOD, idGuardia, usuari]
+        )
+    } catch (error) {
+        return error
+    }
+
+}
+async function noEscollirTreballador(usuariMOD, idGuardia, usuari) {
+    try {
+        db.execute(
+            "UPDATE TreballadorsApuntats SET estat = 'no triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
+            [usuariMOD, idGuardia, usuari]
+        )
+    } catch (error) {
+        return error
+    }
+
 }
 
 module.exports = {
@@ -96,5 +132,7 @@ module.exports = {
     getIDGuardiesByTreballador,
     getIDTreballadorsByIdGuardia,
     desapuntarTreballador,
-    seleccioTreballadors
+    seleccioTreballadors,
+    triarTreballador,
+    noTriarTreballador
 }

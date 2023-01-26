@@ -10,6 +10,8 @@ router.get('/getIDTreballadorsByIdGuardia', treballadorsApuntatsController.getID
 router.post('/apuntarTreballador', treballadorsApuntatsController.apuntarTreballador);
 router.post('/desapuntarTreballador', treballadorsApuntatsController.desapuntarTreballador);
 router.post('/seleccioTreballadors', treballadorsApuntatsController.seleccioTreballadors);
+router.post('/triarTreballador', treballadorsApuntatsController.triarTreballador);
+router.post('/noTriarTreballador', treballadorsApuntatsController.noTriarTreballador);
 
 module.exports = router
 
