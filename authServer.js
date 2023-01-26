@@ -3,6 +3,7 @@
 require("dotenv").config();
 const express = require('express');
 const app = express();
+const cors = require("cors")
 
 const userRoutes = require('./Routes/user.js');
 const categoriaRoutes = require('./Routes/categoria.js');
@@ -16,6 +17,7 @@ const tornRoutes = require('./Routes/torn.js')
 const treballadorsApuntatsRoutes = require('./Routes/treballadorsApuntats.js')
 const treballadorRoutes = require('./Routes/treballador.js')
 
+app.use(cors())
 app.use(express.json());
 app.use('/api/user', userRoutes);
 app.use('/api/categoria', categoriaRoutes);

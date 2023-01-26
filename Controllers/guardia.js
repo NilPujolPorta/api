@@ -90,9 +90,16 @@ const deactivateGuardia = (async (req, res) => {
 const getGuardiesTreballador = (async (req, res) => {
     let guardies = []
     await db.execute(
-        "SELECT * from Guardia WHERE idGuardia IN (SELECT idGuardia FROM TreballadorsApuntats WHERE usuari = ? AND estat = 'apuntat')",
+        "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " + 
+        "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " + 
+        "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " + 
+        "AND (estat = 'apuntat' OR estat = 'triat'))",
         [req.body.usuari]
     ).then(result => guardies = result[0])
+    guardies.forEach(guardia => {
+        guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
+    });
+    console.log(guardies)
     res.status(201).json(guardies)
 })
 
