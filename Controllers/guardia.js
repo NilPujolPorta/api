@@ -99,7 +99,6 @@ const getGuardiesTreballador = (async (req, res) => {
     guardies.forEach(guardia => {
         guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
     });
-    console.log(guardies)
     res.status(201).json(guardies)
 })
 

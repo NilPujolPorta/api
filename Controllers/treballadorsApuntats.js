@@ -6,7 +6,7 @@ const apuntarTreballador = (async (req, res) => {
     const usuariMOD = req.body.usuariMOD;
     try {
         db.execute(
-            "INSERT INTO TreballadorsApuntats (estat, idGuardia, usuari, usuariMOD) VALUES ('apuntat', ?, ?, ?)",
+            "INSERT INTO TreballadorsApuntats (estat, idGuardia, usuari, usuariMOD) VALUES ('Apuntat', ?, ?, ?)",
             [idGuardia, usuari, usuariMOD]
         )
 
@@ -48,7 +48,7 @@ const getIDGuardiesByTreballador = (async (req, res) => {
 const desapuntarTreballador = (async (req, res) => {
     try {
         await db.execute(
-            "UPDATE TreballadorsApuntats SET estat = 'desapuntat' AND usarMOD = ? WHERE idGuardia = ? AND usuari = ?",
+            "UPDATE TreballadorsApuntats SET estat = 'Desapuntat' AND usarMOD = ? WHERE idGuardia = ? AND usuari = ?",
             [req.body.usuariMOD, req.body.idGuardia, req.body.usuari]
         )
         res.status(201).json({ missatge: "Treballador desapuntat" })
@@ -106,7 +106,7 @@ async function ferSeleccio(usuarisTriats, usuarisNoTriats, idGuardia, usuariMOD)
 async function escollirTreballador(usuariMOD, idGuardia, usuari) {
     try {
         db.execute(
-            "UPDATE TreballadorsApuntats SET estat = 'triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
+            "UPDATE TreballadorsApuntats SET estat = 'Triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
             [usuariMOD, idGuardia, usuari]
         )
     } catch (error) {
@@ -117,7 +117,7 @@ async function escollirTreballador(usuariMOD, idGuardia, usuari) {
 async function noEscollirTreballador(usuariMOD, idGuardia, usuari) {
     try {
         db.execute(
-            "UPDATE TreballadorsApuntats SET estat = 'no triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
+            "UPDATE TreballadorsApuntats SET estat = 'No triat', usuariMOD = ? WHERE idGuardia = ? AND usuari = ?",
             [usuariMOD, idGuardia, usuari]
         )
     } catch (error) {
