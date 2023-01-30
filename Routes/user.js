@@ -29,10 +29,9 @@ router.post('/createUser',
 );
 router.post('/login', userController.login)
 router.post('/refreshToken', userController.refreshToken)
-router.delete('/logout', userController.logout)
+router.post('/logout', userController.logout)
 
 router.get('/auth', userController.validateToken, userController.authenticated)
-router.get('/createGuardies', userController.createGuardies)
 
 
 

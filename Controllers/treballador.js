@@ -27,7 +27,7 @@ const createTreballador = (async (req, res) => {
 
 async function encrypt(password) {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(password, 12);
     return hashedPassword;
 }
 
@@ -41,18 +41,18 @@ const getTreballadors = (async (req, res) => {
 
 async function getTreballadorByUsername(username) {
     return await db.execute(
-        'SELECT * FROM Treballador WHERE actiu = true AND WHERE usuari = ?',
-        [username]
+        'SELECT * FROM Treballador WHERE actiu = true AND usuari = \'' + username + '\''
     ).then(result => resposta = result[0]);
 }
 
 const login = (async (req, res) => {
     let user;
-    await getTreballadorByUsername(req.body.usuari).then(result => user = result[0][0]);
-
+    await getTreballadorByUsername(req.body.usuari).then(result => user = result[0]);
+    console.log(user);
     if (user == null || user == undefined) res.status(404).send("Usuari o contrasenya no vàlids");
     else {
-        if (await bcrypt.compare(req.body.password, user.contrasenya)) {
+        if (bcrypt.compare(req.body.contrasenya, user.contrasenya)) {
+            console.log
             token.generateAccessToken(({ user: user }))
             token.generateRefreshToken({ user: user })
             console.log(token);

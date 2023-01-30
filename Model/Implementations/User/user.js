@@ -41,15 +41,4 @@ module.exports = class User {
             'SELECT * FROM Plantilles'
         );
     }
-
-    /*static createGuardies(plantilla) {
-        let festius_fixes = this.getFestiusFixes();
-        console.log(festius_fixes);
-    }*/
-    
-    static getFestiusFixes() {
-        return db.execute(
-            'SELECT * FROM FestiusFixes'
-        );
-    }
 }
