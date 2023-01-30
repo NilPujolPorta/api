@@ -41,7 +41,8 @@ const getTreballadors = (async (req, res) => {
 
 async function getTreballadorByUsername(username) {
     return await db.execute(
-        'SELECT * FROM Treballador WHERE actiu = true AND WHERE usuari = '+username
+        'SELECT * FROM Treballador WHERE actiu = true AND WHERE usuari = ?',
+        [username]
     ).then(result => resposta = result[0]);
 }
 
