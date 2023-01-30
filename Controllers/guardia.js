@@ -68,11 +68,11 @@ async function crearGuardiesPerDia(dia) {
                 "INSERT INTO Guardia (places, torn, zona, categoria, data, usuariMOD) VALUES (?, ?, ?, ?, ?, ?)",
                 [plantilla["places"], plantilla["torn"], plantilla["zona"], plantilla["categoria"], date.format(dia["data"], "YYYY-MM-DD"), "admin"]
             )
-        }); 
+        });
     } catch (error) {
-        res.status(400).json({missatge: error})
+        res.status(400).json({ missatge: error })
     }
-    
+
 }
 
 const deactivateGuardia = (async (req, res) => {
@@ -83,16 +83,16 @@ const deactivateGuardia = (async (req, res) => {
         )
         res.status(201).json({ missatge: "Guardia desactivada" })
     } catch (error) {
-        res.status(400).json({missatge: error})
+        res.status(400).json({ missatge: error })
     }
 })
 
 const getGuardiesTreballador = (async (req, res) => {
     let guardies = []
     await db.execute(
-        "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " + 
-        "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " + 
-        "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " + 
+        "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " +
+        "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " +
+        "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " +
         "AND (estat = 'apuntat' OR estat = 'triat'))",
         [req.body.usuari]
     ).then(result => guardies = result[0])
