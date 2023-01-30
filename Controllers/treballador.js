@@ -51,16 +51,18 @@ const login = (async (req, res) => {
     console.log(user);
     if (user == null || user == undefined) res.status(404).send("Usuari o contrasenya no vàlids");
     else {
-        if (bcrypt.compare(req.body.contrasenya, user.contrasenya)) {
-            console.log
-            token.generateAccessToken(({ user: user }))
-            token.generateRefreshToken({ user: user })
-            console.log(token);
-            res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
-        }
-        else {
-            res.status(401).send("Usuari o contrasenya no vàlids");
-        }
+        bcrypt.compare(req.body.contrasenya, user.contrasenya, function(err, result) {
+            if(result == true) {
+                console.log
+                token.generateAccessToken(({ user: user }))
+                token.generateRefreshToken({ user: user })
+                console.log(token);
+                res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+            }else {
+                res.status(401).send("Usuari o contrasenya no vàlids: "+ err);
+            }
+        });
+        
     }
 })
 
