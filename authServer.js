@@ -3,12 +3,10 @@
 require("dotenv").config();
 const express = require('express');
 const app = express();
-<<<<<<< Updated upstream
-=======
+
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger_output.json');
 const cors = require("cors")
->>>>>>> Stashed changes
 
 const userRoutes = require('./Routes/user.js');
 const userArticles = require('./Routes/article.js')
