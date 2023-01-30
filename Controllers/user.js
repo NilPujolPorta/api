@@ -5,8 +5,6 @@ const jwt = require("jsonwebtoken")
 
 const token = new Token();
 
-
-
 const createUser = (async (req, res) => {
     const userEmail = req.body.email;
     const hashedPassword = await User.encrypt(req.body.password);
