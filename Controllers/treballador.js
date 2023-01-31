@@ -75,10 +75,22 @@ const logout = (async (req, res) => {
     res.status(204).send("Logged out!")
 })
 
+const refreshToken = (async (req, res) => {
+    if (!token.refreshTokens.includes(req.body.token)) res.status(400).send("Refresh token invalid");
+
+    token.eliminarRefreshToken(req.body.token);
+
+    token.generateAccessToken(({ user: req.body.name }))
+    token.generateRefreshToken({ user: req.body.name })
+
+    res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+})
+
 module.exports = {
     createTreballador,
     getTreballadors,
     login,
     logout,
-    getTreballador
+    getTreballador,
+    refreshToken
 }

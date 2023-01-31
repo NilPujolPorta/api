@@ -8,5 +8,6 @@ router.get('/', treballadorController.getTreballadors);
 router.get('/getTreballador', treballadorController.getTreballador);
 router.post('/createTreballador', treballadorController.createTreballador);
 router.post('/login', treballadorController.login);
+router.get('/refreshToken', treballadorController.refreshToken);
 router.post('/logout', treballadorController.logout);
 module.exports = router
