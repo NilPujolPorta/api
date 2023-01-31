@@ -1,6 +1,5 @@
 const db = require('../Utils/database');
 const bcrypt = require('bcrypt');
-const User = require("../Model/Implementations/User/user.js");
 const Token = require('../Model/Implementations/Token/token.js');
 const jwt = require("jsonwebtoken");
 
