@@ -39,6 +39,12 @@ const getTreballadors = (async (req, res) => {
     res.status(200).json(resposta);
 })
 
+const getTreballador = (async (req, res) => {
+    let resposta = [];
+    await getTreballadorByUsername(req.body.usuari).then(result => resposta = result[0]);
+    res.status(200).json(resposta);
+})
+
 async function getTreballadorByUsername(username) {
     return await db.execute(
         'SELECT * FROM Treballador WHERE actiu = true AND usuari = \'' + username + '\''
@@ -49,13 +55,11 @@ const login = (async (req, res) => {
     let user;
     await getTreballadorByUsername(req.body.usuari).then(result => user = result[0]);
     console.log(user);
-    if (user == null || user == undefined) res.status(404).send("Usuari o contrasenya no vàlids");
+    if (user == null || user == undefined) res.status(400).send("Usuari o contrasenya no vàlids");
     else {
         if (bcrypt.compare(req.body.contrasenya, user.contrasenya)) {
-            console.log
             token.generateAccessToken(({ user: user }))
             token.generateRefreshToken({ user: user })
-            console.log(token);
             res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
         }
         else {
@@ -73,5 +77,6 @@ module.exports = {
     createTreballador,
     getTreballadors,
     login,
-    logout
+    logout,
+    getTreballador
 }
