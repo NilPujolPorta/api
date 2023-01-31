@@ -75,14 +75,20 @@ const logout = (async (req, res) => {
 })
 
 const refreshToken = (async (req, res) => {
-    if (!token.refreshTokens.includes(req.body.token)) res.status(400).send("Refresh token invalid");
+    const refreshToken = req.headers["authorization"].split(" ")[1];
+    if (!token.refreshTokens.includes(refreshToken)) res.status(400).send("Refresh token invalid");
 
-    token.eliminarRefreshToken(req.body.token);
+    jwt.verify(refreshToken, token.secret, (err, user) => {
+        if (err) res.status(403).send("Token invalid")
+        else {
+            token.eliminarRefreshToken(refreshToken);
 
-    token.generateAccessToken(({ user: req.body.name }))
-    token.generateRefreshToken({ user: req.body.name })
+            token.generateAccessToken(({ user: JSON.parse(jwt_decode(token)).usuari }))
+            token.generateRefreshToken({ user: JSON.parse(jwt_decode(token)).usuari })
 
-    res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+            res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+        }
+    })
 })
 
 const authenticated = (async (req, res) => {
