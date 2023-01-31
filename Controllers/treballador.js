@@ -75,10 +75,46 @@ const logout = (async (req, res) => {
     res.status(204).send("Logged out!")
 })
 
+const refreshToken = (async (req, res) => {
+    if (!token.refreshTokens.includes(req.body.token)) res.status(400).send("Refresh token invalid");
+
+    token.eliminarRefreshToken(req.body.token);
+
+    token.generateAccessToken(({ user: req.body.name }))
+    token.generateRefreshToken({ user: req.body.name })
+
+    res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+})
+
+const authenticated = (async (req, res) => {
+    console.log(req.user)
+    res.send(`${req.user.user} is valid`)
+})
+
+
+const validateToken = (async (req, res, next) => {
+
+    const accessToken = req.headers["authorization"].split(" ")[1];
+    if (accessToken == null) res.sendStatus(400).send("Token not present")
+    jwt.verify(accessToken, token.secret, (err, user) => {
+        if (err) res.status(403).send("Token invalid")
+        else {
+            req.user = user
+            next();
+        }
+    })
+    console.log("Validate token")
+    console.log(accessToken)
+
+})
+
 module.exports = {
     createTreballador,
     getTreballadors,
     login,
     logout,
-    getTreballador
+    getTreballador,
+    refreshToken,
+    validateToken,
+    authenticated
 }
