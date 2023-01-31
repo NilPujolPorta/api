@@ -1,4 +1,5 @@
 const { decode } = require("jsonwebtoken");
+import jwt_decode from "jwt-decode";
 
 const permisosBasics = ["user"];
 function rolFromToken(token) {
