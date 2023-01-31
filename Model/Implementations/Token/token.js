@@ -13,16 +13,16 @@ class Token {
     }
 
     generateAccessToken(user) {
-        this.accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "15m"}) 
+        this.accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" })
     }
 
     generateRefreshToken(user) {
-        this.refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "20m"})
+        this.refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "20m" })
         this.refreshTokens.push(this.refreshToken);
     }
 
     eliminarRefreshToken(token) {
-        this.refreshTokens = this.refreshTokens.filter( t => t != token);
+        this.refreshTokens = this.refreshTokens.filter(t => t != token);
     }
 }
 

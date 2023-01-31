@@ -2,7 +2,6 @@ const db = require('../Utils/database');
 const bcrypt = require('bcrypt');
 const Token = require('../Model/Implementations/Token/token.js');
 const jwt = require("jsonwebtoken");
-import jwt_decode from "jwt-decode";
 
 const token = new Token();
 
@@ -59,8 +58,8 @@ const login = (async (req, res) => {
     else {
         bcrypt.compare(req.body.contrasenya, user.contrasenya, function (err, result) {
             if (result == true) {
-                token.generateAccessToken(user.usuari)
-                token.generateRefreshToken(user.usuari)
+                token.generateAccessToken(({ user: user }))
+                token.generateRefreshToken({ user: user })
                 res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
             } else {
                 res.status(401).send("Usuari o contrasenya no vàlids: " + err);
