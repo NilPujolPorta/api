@@ -58,8 +58,8 @@ const login = (async (req, res) => {
     else {
         bcrypt.compare(req.body.contrasenya, user.contrasenya, function (err, result) {
             if (result == true) {
-                token.generateAccessToken(({ user: user.usuari }))
-                token.generateRefreshToken({ user: user.usuari })
+                token.generateAccessToken(({ user: user }))
+                token.generateRefreshToken({ user: user })
                 res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
             } else {
                 res.status(401).send("Usuari o contrasenya no vàlids: " + err);
@@ -84,9 +84,9 @@ const refreshToken = (async (req, res) => {
             else {
                 token.eliminarRefreshToken(refreshToken);
                 console.log(jwt_decode(refreshToken)['user']['usuari']);
-                token.generateAccessToken({user:(jwt_decode(refreshToken))['user']['usuari']})
-                token.generateRefreshToken({user:(jwt_decode(refreshToken))['user']['usuari']})
-    
+                token.generateAccessToken({ user: jwt_decode(refreshToken)['user'] })
+                token.generateRefreshToken({ user: jwt_decode(refreshToken)['user'] })
+
                 console.log(JSON.stringify(user));
                 res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
             }
