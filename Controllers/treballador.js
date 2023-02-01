@@ -76,26 +76,18 @@ const logout = (async (req, res) => {
 
 const refreshToken = (async (req, res) => {
     const refreshToken = req.headers["authorization"].split(" ")[1];
-    console.log(JSON.stringify(jwt_decode(refreshToken)));
     if (!token.refreshTokens.includes(refreshToken)) res.status(400).send("Refresh token invalid")
     else {
-        jwt.verify(refreshToken, token.secret, (err, user) => {
-            if (err) res.status(403).send("Token invalid")
-            else {
-                token.eliminarRefreshToken(refreshToken);
-                console.log(jwt_decode(refreshToken)['user']['usuari']);
-                token.generateAccessToken({ user: jwt_decode(refreshToken)['user'] })
-                token.generateRefreshToken({ user: jwt_decode(refreshToken)['user'] })
+        token.eliminarRefreshToken(refreshToken);
+        token.generateAccessToken({ user: jwt_decode(refreshToken)['user'] })
+        token.generateRefreshToken({ user: jwt_decode(refreshToken)['user'] })
 
-                console.log(JSON.stringify(user));
-                res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
-            }
-        })
+        res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+
     }
 })
 
 const authenticated = (async (req, res) => {
-    console.log(req.user)
     res.send(`${req.user.user} is valid`)
 })
 
