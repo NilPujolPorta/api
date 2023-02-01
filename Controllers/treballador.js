@@ -14,14 +14,19 @@ const createTreballador = (async (req, res) => {
     const cognoms = req.body.cognoms;
     const categoria = req.body.categoria;
     const rol = req.body.rol;
-    try {
-        db.execute(
-            "INSERT INTO Treballador (usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol]
-        )
-        res.status(201).json({ missatge: 'Treballador registrat correctament' });
-    } catch (error) {
-        res.status(400).json({ missatge: error })
+    if (getTreballadorByUsername(usuari) == "{}") {
+        res.status(409).json({ missatge: 'Treballador ja existeix' })
+    }
+    else {
+        try {
+            db.execute(
+                "INSERT INTO Treballador (usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [usuari, contrasenya, usuariMOD, nom, cognoms, categoria, rol]
+            )
+            res.status(201).json({ missatge: 'Treballador registrat correctament' });
+        } catch (error) {
+            res.status(400).json({ missatge: error })
+        }
     }
 })
 
