@@ -2,6 +2,7 @@ const db = require('../Utils/database');
 const bcrypt = require('bcrypt');
 const Token = require('../Model/Implementations/Token/token.js');
 const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
 
 const token = new Token();
 
@@ -76,19 +77,22 @@ const logout = (async (req, res) => {
 
 const refreshToken = (async (req, res) => {
     const refreshToken = req.headers["authorization"].split(" ")[1];
-    if (!token.refreshTokens.includes(refreshToken)) res.status(400).send("Refresh token invalid");
-
-    jwt.verify(refreshToken, token.secret, (err, user) => {
-        if (err) res.status(403).send("Token invalid")
-        else {
-            token.eliminarRefreshToken(refreshToken);
-            console.log(JSON.stringify(user));
-            token.generateAccessToken(JSON.parse(jwt_decode(token)).usuari)
-            token.generateRefreshToken(JSON.parse(jwt_decode(token)).usuari)
-
-            res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
-        }
-    })
+    console.log(JSON.stringify(jwt_decode(refreshToken)));
+    if (!token.refreshTokens.includes(refreshToken)) res.status(400).send("Refresh token invalid")
+    else {
+        jwt.verify(refreshToken, token.secret, (err, user) => {
+            if (err) res.status(403).send("Token invalid")
+            else {
+                token.eliminarRefreshToken(refreshToken);
+                console.log(jwt_decode(refreshToken)['user']['usuari']);
+                token.generateAccessToken({user:(jwt_decode(refreshToken))['user']['usuari']})
+                token.generateRefreshToken({user:(jwt_decode(refreshToken))['user']['usuari']})
+    
+                console.log(JSON.stringify(user));
+                res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
+            }
+        })
+    }
 })
 
 const authenticated = (async (req, res) => {
