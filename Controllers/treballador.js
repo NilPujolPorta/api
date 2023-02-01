@@ -53,13 +53,12 @@ async function getTreballadorByUsername(username) {
 const login = (async (req, res) => {
     let user;
     await getTreballadorByUsername(req.body.usuari).then(result => user = result[0]);
-    console.log(user);
     if (user == null || user == undefined) res.status(400).send("Usuari o contrasenya no vàlids");
     else {
         bcrypt.compare(req.body.contrasenya, user.contrasenya, function (err, result) {
             if (result == true) {
-                token.generateAccessToken(({ user: user }))
-                token.generateRefreshToken({ user: user })
+                token.generateAccessToken(({ user: user.usuari }))
+                token.generateRefreshToken({ user: user.usuari })
                 res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
             } else {
                 res.status(401).send("Usuari o contrasenya no vàlids: " + err);
@@ -83,8 +82,8 @@ const refreshToken = (async (req, res) => {
         else {
             token.eliminarRefreshToken(refreshToken);
             console.log(JSON.stringify(user));
-            token.generateAccessToken(JSON.parse(jwt_decode(token)).usuari)
-            token.generateRefreshToken(JSON.parse(jwt_decode(token)).usuari)
+            token.generateAccessToken(JSON.parse(jwt_decode(token)).user.usuari)
+            token.generateRefreshToken(JSON.parse(jwt_decode(token)).user.usuari)
 
             res.json({ accessToken: token.accessToken, refreshToken: token.refreshToken })
         }
@@ -121,5 +120,6 @@ module.exports = {
     getTreballador,
     refreshToken,
     validateToken,
-    authenticated
+    authenticated,
+    getTreballadorByUsername
 }
