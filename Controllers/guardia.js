@@ -73,7 +73,7 @@ async function crearGuardiesPerDia(dia) {
             )
         });
     } catch (error) {
-        res.status(400).json({ missatge: error })
+        return error
     }
 
 }
