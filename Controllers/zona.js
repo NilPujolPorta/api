@@ -24,7 +24,7 @@ const getZones = (async (req, res) => {
     try {
         let resposta = [];
         await db.execute(
-            'SELECT * FROM Zona'
+            "SELECT * FROM Zona WHERE actiu = true"
         ).then(result => resposta = result[0]);
         res.status(200).json(resposta);
     } catch (error) {
@@ -34,7 +34,7 @@ const getZones = (async (req, res) => {
 async function getZonesReturn() {
     let resposta = [];
     await db.execute(
-        'SELECT * FROM Zona'
+        "SELECT * FROM Zona WHERE actiu = true"
     ).then(result => resposta = result[0]);
     return resposta;
 }

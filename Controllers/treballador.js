@@ -15,7 +15,7 @@ const createTreballador = (async (req, res) => {
         const cognoms = req.body.cognoms;
         const categoria = req.body.categoria;
         const rol = req.body.rol;
-        if (getTreballadorByUsername(usuari) == "{}") {
+        if (getTreballadorByUsername(usuari)[0] == undefined) {
             res.status(409).json({ missatge: 'Treballador ja existeix' })
         }
         else {
@@ -90,13 +90,13 @@ const login = (async (req, res) => {
 
 const logout = (async (req, res) => {
     token.eliminarRefreshToken(req.body.token);
-    res.status(204).send("Logged out!")
+    res.status(204).send({ missatge: "Logged out!" })
 })
 
 const refreshToken = (async (req, res) => {
     try {
         const refreshToken = req.headers["authorization"].split(" ")[1];
-        if (!token.refreshTokens.includes(refreshToken)) res.status(400).send("Refresh token invalid")
+        if (!token.refreshTokens.includes(refreshToken)) res.status(400).send({ missatge: "Refresh token invalid" })
         else {
             token.eliminarRefreshToken(refreshToken);
             token.generateAccessToken({ user: jwt_decode(refreshToken)['user'] })
@@ -120,7 +120,7 @@ const validateToken = (async (req, res, next) => {
         const accessToken = req.headers["authorization"].split(" ")[1];
         if (accessToken == null) res.sendStatus(400).send("Token not present")
         jwt.verify(accessToken, token.secret, (err, user) => {
-            if (err) res.status(403).send("Token invalid")
+            if (err) res.status(403).send({ missatge: "Token invalid" })
             else {
                 req.user = user
                 next();
