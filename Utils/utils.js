@@ -1,4 +1,4 @@
-import jwt_decode from "jwt-decode";
+const jwt_decode = require("jwt-decode");
 const treballador = require("../Controllers/treballador.js")
 const Token = require('../Model/Implementations/Token/token.js')
 const jwt = require("jsonwebtoken")
@@ -23,6 +23,5 @@ const validateTokenG = (async (req, res, next) => {
 
 module.exports = {
     validateTokenG,
-    permisosBasics,
     rolFromToken
 }

@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 const { body } = require('express-validator');
-const zonaController = require('../Controllers/torn.js')
+const zonaController = require('../Controllers/torn.js');
+const { validateTokenG } = require('../Utils/utils.js');
 
-router.get('/', zonaController.getTorns);
+router.get('/', validateTokenG, zonaController.getTorns);
 
-router.post('/createTorn', zonaController.createTorn);
+router.post('/createTorn', validateTokenG, zonaController.createTorn);
 module.exports = router
