@@ -69,7 +69,7 @@ const login = (async (req, res) => {
     try {
         let user;
         await getTreballadorByUsername(req.body.usuari).then(result => user = result[0]);
-        if (user == null || user == undefined) res.status(400).send("Usuari o contrasenya no vàlids");
+        if (user == null || user == undefined) res.status(400).send("Usuari no vàlid");
         else {
             bcrypt.compare(req.body.contrasenya, user.contrasenya, function (err, result) {
                 if (result == true) {
@@ -141,5 +141,6 @@ module.exports = {
     refreshToken,
     validateToken,
     authenticated,
-    getTreballadorByUsername
+    getTreballadorByUsername,
+    token
 }
