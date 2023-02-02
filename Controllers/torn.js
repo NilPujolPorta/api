@@ -20,7 +20,7 @@ const getTorns = (async (req, res) => {
     try {
         let resposta = [];
         await db.execute(
-            'SELECT * FROM Torn'
+            'SELECT * FROM Torn AND actiu = true'
         ).then(result => resposta = result[0]);
         res.json(resposta);
     } catch (error) {

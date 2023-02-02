@@ -30,7 +30,7 @@ const getIDTreballadorsByIdGuardia = (async (req, res) => {
         let resposta = [];
         const id = req.body.idGuardia;
         await db.execute(
-            "SELECT * FROM TreballadorsApuntats WHERE idGuardia = ?",
+            "SELECT * FROM TreballadorsApuntats WHERE idGuardia = ? AND actiu = true",
             [id]
         ).then(result => resposta = result[0]);
         res.json(resposta);
@@ -44,7 +44,7 @@ const getIDGuardiesByTreballador = (async (req, res) => {
         let resposta = [];
         const id = req.body.usuari;
         await db.execute(
-            "SELECT * FROM TreballadorsApuntats WHERE usuari = ?",
+            "SELECT * FROM TreballadorsApuntats WHERE usuari = ? AND actiu = true",
             [id]
         ).then(result => resposta = result[0]);
         res.json(resposta);
