@@ -5,9 +5,12 @@ const plantillaController = require('../Controllers/plantilles.js');
 const date = require("date-and-time");
 
 const getGuardies = (async (req, res) => {
-    let guardies = await returnGuardies();
-
-    res.json(guardies);
+    try {
+        let guardies = await returnGuardies();
+        res.json(guardies);
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 async function returnGuardies() {
@@ -61,8 +64,8 @@ const createGuardies = (async (req, res) => {
 })
 
 async function crearGuardiesPerDia(dia) {
-    let plantilles = await plantillaController.returnPlantilles();
     try {
+        let plantilles = await plantillaController.returnPlantilles();
         plantilles.forEach(plantilla => {
             db.execute(
                 "INSERT INTO Guardia (places, torn, zona, categoria, data, usuariMOD) VALUES (?, ?, ?, ?, ?, ?)",
@@ -88,18 +91,22 @@ const deactivateGuardia = (async (req, res) => {
 })
 
 const getGuardiesTreballador = (async (req, res) => {
-    let guardies = []
-    await db.execute(
-        "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " +
-        "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " +
-        "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " +
-        "AND (estat = 'apuntat' OR estat = 'triat'))",
-        [req.body.usuari]
-    ).then(result => guardies = result[0])
-    guardies.forEach(guardia => {
-        guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
-    });
-    res.status(201).json(guardies)
+    try {
+        let guardies = []
+        await db.execute(
+            "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " +
+            "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " +
+            "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " +
+            "AND (estat = 'apuntat' OR estat = 'triat'))",
+            [req.body.usuari]
+        ).then(result => guardies = result[0])
+        guardies.forEach(guardia => {
+            guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
+        });
+        res.status(201).json(guardies)
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 module.exports = {

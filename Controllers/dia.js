@@ -2,9 +2,13 @@ const db = require('../Utils/database');
 const date = require("date-and-time");
 
 const getDies = (async (req, res) => {
-    let dies = await returnDies()
+    try {
+        let dies = await returnDies()
 
-    res.json(dies);
+        res.json(dies);
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 async function returnDies() {
@@ -51,7 +55,7 @@ const deactivateDia = (async (req, res) => {
         )
         res.status(201).json({ missatge: "Dia desactivat" })
     } catch (error) {
-        res.status(400).json({missatge: error})
+        res.status(400).json({ missatge: error })
     }
 })
 
