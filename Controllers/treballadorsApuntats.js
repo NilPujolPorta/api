@@ -1,10 +1,10 @@
 const db = require('../Utils/database');
 
 const apuntarTreballador = (async (req, res) => {
-    const idGuardia = req.body.idGuardia;
-    const usuari = req.body.usuari;
-    const usuariMOD = req.body.usuariMOD;
     try {
+        const idGuardia = req.body.idGuardia;
+        const usuari = req.body.usuari;
+        const usuariMOD = req.body.usuariMOD;
         db.execute(
             "INSERT INTO TreballadorsApuntats (estat, idGuardia, usuari, usuariMOD) VALUES ('Apuntat', ?, ?, ?)",
             [idGuardia, usuari, usuariMOD]
@@ -26,23 +26,32 @@ const getTrebelladorsApuntats = (async (req, res) => {
 })
 
 const getIDTreballadorsByIdGuardia = (async (req, res) => {
-    let resposta = [];
-    const id = req.body.idGuardia;
-    await db.execute(
-        "SELECT * FROM TreballadorsApuntats WHERE idGuardia = ?",
-        [id]
-    ).then(result => resposta = result[0]);
-    res.json(resposta);
+    try {
+        let resposta = [];
+        const id = req.body.idGuardia;
+        await db.execute(
+            "SELECT * FROM TreballadorsApuntats WHERE idGuardia = ?",
+            [id]
+        ).then(result => resposta = result[0]);
+        res.json(resposta);
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 const getIDGuardiesByTreballador = (async (req, res) => {
-    let resposta = [];
-    const id = req.body.usuari;
-    await db.execute(
-        "SELECT * FROM TreballadorsApuntats WHERE usuari = ?",
-        [id]
-    ).then(result => resposta = result[0]);
-    res.json(resposta);
+    try {
+        let resposta = [];
+        const id = req.body.usuari;
+        await db.execute(
+            "SELECT * FROM TreballadorsApuntats WHERE usuari = ?",
+            [id]
+        ).then(result => resposta = result[0]);
+        res.json(resposta);
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
+
 })
 
 const desapuntarTreballador = (async (req, res) => {
@@ -74,7 +83,7 @@ const triarTreballador = (async (req, res) => {
         escollirTreballador(req.body.usuariMOD, req.body.idGuardia, req.body.usuari)
         res.status(201).json({ missatge: "Usuari escollit per la guàrdia" })
     } catch (error) {
-        res.status(400).json({missatge: error})
+        res.status(400).json({ missatge: error })
     }
 
 })
@@ -84,7 +93,7 @@ const noTriarTreballador = (async (req, res) => {
         noEscollirTreballador(req.body.usuariMOD, req.body.idGuardia, req.body.usuari)
         res.status(201).json({ missatge: "Usuari no escollit per la guàrdia" })
     } catch (error) {
-        res.status(400).json({missatge: error})
+        res.status(400).json({ missatge: error })
     }
 })
 
