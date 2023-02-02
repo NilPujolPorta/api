@@ -1,12 +1,15 @@
 const db = require('../Utils/database');
 
 const getFestiusFixes = (async (req, res) => {
-    let festius_fixes = await returnFestiusFixes();
-
-    res.json(festius_fixes);
+    try {
+        let festius_fixes = await returnFestiusFixes();
+        res.json(festius_fixes);
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
-async function returnFestiusFixes(){
+async function returnFestiusFixes() {
     let festiu = [];
     await db.execute(
         'SELECT * FROM FestiusFixes WHERE actiu = true'
@@ -52,7 +55,7 @@ const deactivateFestiuFixe = (async (req, res) => {
         )
         res.status(201).json({ missatge: "Festiu desactivat" })
     } catch (error) {
-        res.status(400).json({missatge: error})
+        res.status(400).json({ missatge: error })
     }
 })
 

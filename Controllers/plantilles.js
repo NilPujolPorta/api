@@ -1,9 +1,12 @@
 const db = require('../Utils/database');
 
 const getPlantilles = (async (req, res) => {
-    let plantilles = await returnPlantilles();
-
-    res.json(plantilles);
+    try {
+        let plantilles = await returnPlantilles();
+        res.json(plantilles);
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 async function returnPlantilles() {
@@ -50,7 +53,7 @@ const deactivatePlantilla = (async (req, res) => {
         )
         res.status(201).json({ missatge: "Plantilla desactivada" })
     } catch (error) {
-        res.status(400).json({missatge: error})
+        res.status(400).json({ missatge: error })
     }
 })
 
