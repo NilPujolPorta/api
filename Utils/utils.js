@@ -4,8 +4,8 @@ const Token = require('../Model/Implementations/Token/token.js')
 const jwt = require("jsonwebtoken")
 
 const permisosBasics = ["user"];
-function rolFromToken(token) {
-    return treballador.getTreballadorByUsername(jwt_decode(token).user.usuari).rol;
+function userFromToken(token) {
+    return treballador.getTreballadorByUsername(jwt_decode(token).user.usuari);
 }
 const validateTokenG = (async (req, res, next) => {
     try {
@@ -23,5 +23,5 @@ const validateTokenG = (async (req, res, next) => {
 
 module.exports = {
     validateTokenG,
-    rolFromToken
+    userFromToken
 }
