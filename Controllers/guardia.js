@@ -94,8 +94,7 @@ const getGuardiesTreballador = (async (req, res) => {
     try {
         let guardies = []
         await db.execute(
-            "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " +
-            "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " +
+            "SELECT Guardia.*, TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " +
             "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " +
             "AND (estat = 'apuntat' OR estat = 'triat') AND actiu = true)",
             [req.body.usuari]
