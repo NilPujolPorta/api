@@ -63,9 +63,9 @@ const createGuardies = (async (req, res) => {
 async function crearGuardiesPerDia(dia) {
     try {
         let plantilles = await plantillaController.returnPlantilles();
-        plantilles.forEach(async plantilla =>  {
-            let guardia = await returnGuardia(plantilla["places"], plantilla["torn"], plantilla["zona"], plantilla["categoria"],  date.format(dia["data"], "YYYY-MM-DD"));
-            if (guardia[0] == undefined){
+        plantilles.forEach(async plantilla => {
+            let guardia = await returnGuardia(plantilla["places"], plantilla["torn"], plantilla["zona"], plantilla["categoria"], date.format(dia["data"], "YYYY-MM-DD"));
+            if (guardia[0] == undefined) {
                 db.execute(
                     "INSERT INTO Guardia (places, torn, zona, categoria, data, usuariMOD) VALUES (?, ?, ?, ?, ?, ?)",
                     [plantilla["places"], plantilla["torn"], plantilla["zona"], plantilla["categoria"], date.format(dia["data"], "YYYY-MM-DD"), "admin"]
@@ -91,18 +91,22 @@ const deactivateGuardia = (async (req, res) => {
 })
 
 const getGuardiesTreballador = (async (req, res) => {
-    let guardies = []
-    await db.execute(
-        "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " +
-        "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " +
-        "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " +
-        "AND (estat = 'apuntat' OR estat = 'triat') AND actiu = true)",
-        [req.body.usuari]
-    ).then(result => guardies = result[0])
-    guardies.forEach(guardia => {
-        guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
-    });
-    res.status(201).json(guardies)
+    try {
+        let guardies = []
+        await db.execute(
+            "SELECT Guardia.data, Guardia.torn, Guardia.categoria, Guardia.zona, " +
+            "TreballadorsApuntats.estat FROM Guardia  INNER JOIN TreballadorsApuntats ON " +
+            "(Guardia.idGuardia = TreballadorsApuntats.idGuardia AND TreballadorsApuntats.usuari = ? " +
+            "AND (estat = 'apuntat' OR estat = 'triat') AND actiu = true)",
+            [req.body.usuari]
+        ).then(result => guardies = result[0])
+        guardies.forEach(guardia => {
+            guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
+        });
+        res.status(201).json(guardies)
+    } catch (error) {
+        res.status(400).json({ missatge: error })
+    }
 })
 
 module.exports = {
