@@ -31,6 +31,10 @@ async function returnGuardia(places, torn, zona, categoria, data) {
 
 const createGuardia = (async (req, res) => {
     try {
+        let dia_existeix = await diaController.returnDia(req.body.data)
+        if (dia_existeix[0] == undefined) {
+            diaController.crearDia(req.body.data, req.body.usuariMOD);
+        }
         let guardia = await returnGuardia(req.body.places, req.body.torn, req.body.zona, req.body.categoria, req.body.data);
         if (guardia[0] == undefined) {
             await db.execute(
