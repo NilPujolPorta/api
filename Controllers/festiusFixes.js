@@ -63,5 +63,7 @@ const deactivateFestiuFixe = (async (req, res) => {
 module.exports = {
     getFestiusFixes,
     createFestiuFixe,
-    deactivateFestiuFixe
+    deactivateFestiuFixe,
+    returnFestiusFixes,
+    returnFestiuFixe
 }

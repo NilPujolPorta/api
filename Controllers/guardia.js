@@ -49,7 +49,16 @@ const createGuardia = (async (req, res) => {
 const createGuardies = (async (req, res) => {
     try {
         let dies;
+        let festius;
         dies = await diaController.returnDies();
+        festius = await festiusFixesController.returnFestiusFixes();
+        festius.forEach(async festiu => {
+            let dia_festiu = await diaController.returnDia(festiu.data)
+            if (dia_festiu[0] == undefined) {
+                await diaController.crearDia(festiu.data, festiu.usuariMOD)
+                dies.push(festiu);
+            }
+        });
         dies.forEach(dia => {
             crearGuardiesPerDia(dia);
         })

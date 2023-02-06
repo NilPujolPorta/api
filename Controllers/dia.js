@@ -34,10 +34,7 @@ const createDia = (async (req, res) => {
     try {
         let dia = await returnDia(req.body.data);
         if (dia[0] == undefined) {
-            await db.execute(
-                'INSERT INTO Dia (data, usuariMOD) VALUES(?, ?)',
-                [req.body.data, req.body.usuariMOD]
-            )
+            await crearDia(req.body.data, req.body.usuariMOD)
             res.status(201).json({ missatge: "Dia afegit" })
         } else {
             res.status(400).json({ missatge: "Aquest dia ja existeix" })
@@ -46,6 +43,13 @@ const createDia = (async (req, res) => {
         res.status(400).json({ missatge: error })
     }
 })
+
+async function crearDia(data, usuariMOD) {
+    db.execute(
+        'INSERT INTO Dia (data, usuariMOD) VALUES(?, ?)',
+        [data, usuariMOD]
+    )
+}
 
 const deactivateDia = (async (req, res) => {
     try {
@@ -64,5 +68,7 @@ module.exports = {
     getDies,
     createDia,
     returnDies,
-    deactivateDia
+    deactivateDia,
+    returnDia,
+    crearDia
 }
