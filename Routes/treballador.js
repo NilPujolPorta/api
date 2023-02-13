@@ -5,7 +5,7 @@ const { body } = require('express-validator');
 const treballadorController = require('../Controllers/treballador.js')
 
 router.get('/', treballadorController.validateToken, treballadorController.getTreballadors);
-router.get('/getTreballador', treballadorController.validateToken, treballadorController.getTreballador);
+router.post('/getTreballador', treballadorController.validateToken, treballadorController.getTreballador);
 router.post('/createTreballador', treballadorController.validateToken, treballadorController.createTreballador);
 router.post('/login', treballadorController.login);
 router.get('/auth', treballadorController.validateToken, treballadorController.authenticated)
