@@ -57,8 +57,8 @@ const getIDGuardiesByTreballador = (async (req, res) => {
 const desapuntarTreballador = (async (req, res) => {
     try {
         await db.execute(
-            "UPDATE TreballadorsApuntats SET estat = 'Desapuntat' AND usarMOD = ? WHERE idGuardia = ? AND usuari = ?",
-            [req.body.usuariMOD, req.body.idGuardia, req.body.usuari]
+            "UPDATE TreballadorsApuntats SET estat = 'Desapuntat' WHERE idGuardia = ? AND usuari = ?",
+            [req.body.idGuardia, req.body.usuari]
         )
         res.status(201).json({ missatge: "Treballador desapuntat" })
     } catch (error) {
