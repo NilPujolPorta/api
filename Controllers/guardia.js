@@ -15,6 +15,9 @@ async function returnGuardies() {
     await db.execute(
         'SELECT * FROM Guardia WHERE actiu = true'
     ).then(result => guardies = result[0]);
+    guardies.forEach(guardia => {
+        guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
+    });
 
     return guardies;
 }
@@ -25,6 +28,7 @@ async function returnGuardia(places, torn, zona, categoria, data) {
         'SELECT * FROM Guardia WHERE places = ? AND torn = ? AND zona = ? AND categoria = ? AND data = ? AND actiu = true',
         [places, torn, zona, categoria, data]
     ).then(result => guardia = result[0]);
+    guardia["data"] = date.format(guardia["data"], "DD-MM-YYYY")
 
     return guardia;
 }
